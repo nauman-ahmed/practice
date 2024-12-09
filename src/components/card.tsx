@@ -1,21 +1,68 @@
 import { useState } from "react"
 
-const Counter: React.FC = () => {
-    
-    const [count, setCount] = useState<number>(0)
+type TGeo = {
+    lat: string,
+    lng: string
+  }
+  type TAddress = {
+    city:string,
+    street:string,
+    suite:string,
+    zipcode:string,
+    geo:TGeo
+  }
+  type TCompany = {
+    bs:string,
+    catchPhrase:string,
+    name:string,
+  }
+  type TUserData = {
+    email:string,
+    name:string,
+    phone:string,
+    username:string,
+    website:string,
+    address:TAddress,
+    company:TCompany
+  }
 
-    const incrementHandler = (): void => { setCount((prevState) => prevState+1) }
-    const decrementHandler = (): void => { if (count == 0) return; setCount((prevState) => prevState-1) }
-    const resetHandler = (): void => { setCount(0) }
-
+interface UserProps {
+    userData?: TUserData[];
+}
+  
+const User: React.FC<UserProps> = ({ userData }) => {
+      
     return (
-        <div>
-            <div className="flex justify-center mb-10">{count}</div>
-            <button className="px-4 py-2 bg-blue-300 rounded-lg mx-4" onClick={incrementHandler}>+</button>
-            <button className={`px-4 py-2 ${count == 0 ? 'bg-slate-500': 'bg-red-300'} rounded-lg mx-4`} onClick={decrementHandler}>-</button>
-            <button className="px-4 py-2 bg-green-300 rounded-lg mx-4" onClick={resetHandler}>Reset</button>
-        </div>
+        
+        <div className="flex flex-col items-center">
+        <h2 className="text-xl font-bold mb-4">User List</h2>
+        {
+          userData?.map((user, index) => (
+            <div
+              key={index}
+              className="border border-gray-300 p-4 rounded-lg mb-2 shadow-md w-80"
+            >
+              <h3 className="text-lg font-semibold">{user.name}</h3>
+              <p>
+                <strong>Email:</strong> {user.email}
+              </p>
+              <p>
+                <strong>Phone:</strong> {user.phone}
+              </p>
+              <p>
+                <strong>Website:</strong> {user.website}
+              </p>
+              <p>
+                <strong>Company:</strong> {user.company.name}
+              </p>
+              <p>
+                <strong>Address:</strong> {user.address.street}, {user.address.city}
+              </p>
+            </div>
+          ))
+        }
+      </div>
     )
 }
 
-export default Counter
+export default User
